@@ -1,0 +1,18 @@
+{
+    "_drinks": [
+        {
+            "name": "Orange",
+            "imageName": "orange",
+            "type": 2,
+            "courageGain": 2,
+            "intoxicationGain": 1
+        },
+        {
+            "name": "Red",
+            "imageName": "red",
+            "type": 3,
+            "courageGain": 1,
+            "intoxicationGain": 2
+        }
+    ]
+}

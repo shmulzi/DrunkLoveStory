@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb9e49672ccc8cb4ab7580c7469c3e78, type: 3}
+  m_Name: drinkMgr
+  m_EditorClassIdentifier: 
+  _drinks:
+  - name: beer
+    imageSprite: {fileID: 21300000, guid: e549581cc2603f64fbbfd543741becdb, type: 3}
+    type: 1
+    courageGain: 3
+    intoxicationGain: 2
+  - name: orange
+    imageSprite: {fileID: 21300000, guid: dd3f6f911c3080444a0691cf6946841f, type: 3}
+    type: 2
+    courageGain: 1
+    intoxicationGain: 2
+  - name: red
+    imageSprite: {fileID: 21300000, guid: aa345c15b6e1ac34c90860b3d7c8e7e2, type: 3}
+    type: 2
+    courageGain: 1
+    intoxicationGain: 1
