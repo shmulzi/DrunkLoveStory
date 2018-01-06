@@ -7,11 +7,10 @@ public class CharacterDriver : MonoBehaviour {
     public float movementSpeed;
     public float stunnedMovementSpeed;
 
-    private Vector3 _cameraRightEdge;
-    private Vector3 _cameraLeftEdge;
     private Rigidbody2D _rb;
     private Vector2 _moveInput;
     private bool _isStunned;
+	private ScreenBorders _screenBorders;
 
     public bool IsStunned
     {
@@ -30,29 +29,28 @@ public class CharacterDriver : MonoBehaviour {
     }
     
     void Start () {
-        _cameraRightEdge = Camera.main.ViewportToWorldPoint(new Vector3(1, 1));
-        _cameraLeftEdge = Camera.main.ViewportToWorldPoint(new Vector3(0, 0));
+		_screenBorders = Camera.main.GetComponent<ScreenBorders>();
         _rb = GetComponent<Rigidbody2D>();
     }
     
     private void Update()
     {
-        if (transform.position.x + 0.5f >= _cameraRightEdge.x)
+		Vector2 halfScale = transform.lossyScale/2;
+		if (transform.position.x + halfScale.x >= _screenBorders.CameraTopRightCorner.x)
         {
-            transform.position = new Vector3(_cameraRightEdge.x - 0.5f, transform.position.y);
+			transform.position = new Vector3(_screenBorders.CameraTopRightCorner.x - halfScale.x, transform.position.y);
         }
-
-        if (transform.position.y + 0.5f >= _cameraRightEdge.y)
+		if (transform.position.y + halfScale.y >= _screenBorders.CameraTopRightCorner.y)
         {
-            transform.position = new Vector3(transform.position.x, _cameraRightEdge.y - 0.5f);
+			transform.position = new Vector3(transform.position.x, _screenBorders.CameraTopRightCorner.y - halfScale.y);
         }
-        if (transform.position.x - 0.5f <= _cameraLeftEdge.x)
+		if (transform.position.x - halfScale.x <= _screenBorders.CameraDownLeftCorner.x)
         {
-            transform.position = new Vector3(_cameraLeftEdge.x + 0.5f, transform.position.y);
+			transform.position = new Vector3(_screenBorders.CameraDownLeftCorner.x + halfScale.x, transform.position.y);
         }
-        if (transform.position.y - 0.5f <= _cameraLeftEdge.y)
+		if (transform.position.y - halfScale.y <= _screenBorders.CameraDownLeftCorner.y)
         {
-            transform.position = new Vector3(transform.position.x, _cameraLeftEdge.y + 0.5f);
+			transform.position = new Vector3(transform.position.x, _screenBorders.CameraDownLeftCorner.y + halfScale.y);
         }
     }
     

@@ -1,18 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Waitress : MonoBehaviour {
 
+	public event Action<GameObject> OnReachedTable;
+
     public Vector2 targetTolerance;
 
-    private List<DrinkObject> _drinkObjects;
     private Vector2 _startingPosition = new Vector2(-5,-5);
-    private Vector2 _targetPosition = new Vector2(0,0);
     private CharacterDriver _characterDriver;
     private bool _goTowardsTarget;
     private bool _inPlay;
     private DrinkPlacement _tray;
+	private GameObject _table;
 
     public DrinkPlacement Tray
     {
@@ -22,6 +24,14 @@ public class Waitress : MonoBehaviour {
         }
     }
 
+	public bool InPlay
+	{
+		get 
+		{
+			return _inPlay;
+		}
+	}
+
 	// Use this for initialization
 	void Start () {
         _characterDriver = GetComponent<CharacterDriver>();
@@ -29,7 +39,6 @@ public class Waitress : MonoBehaviour {
         _inPlay = true;
         transform.position = _startingPosition;
         _tray = GetComponentInChildren<DrinkPlacement>();
-        // select a table and get the position to _targetposition
 
 	}
 	
@@ -39,7 +48,7 @@ public class Waitress : MonoBehaviour {
         {
             if (_goTowardsTarget)
             {
-                _characterDriver.MoveInput = transform.InverseTransformPoint(_targetPosition).normalized;
+				_characterDriver.MoveInput = transform.InverseTransformPoint(_table.transform.position).normalized;
             }
             else
             {
@@ -48,23 +57,29 @@ public class Waitress : MonoBehaviour {
         }
 	}
     
-    public void Activate(Vector3 tablePosition, List<DrinkObject> drinkObjects)
+	public void Activate(GameObject table, List<GameObject> drinks)
     {
         _inPlay = true;
+		_table = table;
+		foreach(GameObject drink in drinks){
+			_tray.AddDrink(drink);
+		}
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.name.StartsWith("Table"))
+		if (collision.gameObject == _table)
         {
-            _goTowardsTarget = false;
+			if(OnReachedTable != null){
+				OnReachedTable(_table);
+			}
+			DrinkPlacement tablePlacement = _table.GetComponent<DrinkPlacement>();
+			while(_tray.IsEmpty()){
+				tablePlacement.AddDrink(_tray.GetDrink());
+			}
+			_table = null;
+			_goTowardsTarget = false;
         }
     }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        
-    }
-
 
 }

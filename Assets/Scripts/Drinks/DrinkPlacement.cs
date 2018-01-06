@@ -68,5 +68,10 @@ public class DrinkPlacement : MonoBehaviour {
         _numOfDrinks--;
         return _drinks.Pop();
     }
+
+	public bool IsEmpty()
+	{
+		return _drinks.Count == 0;
+	}
     
 }
